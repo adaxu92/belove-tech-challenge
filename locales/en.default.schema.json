@@ -3167,6 +3167,62 @@
         "name": "Slideshow"
       }
     },
+    "testimonials": {
+      "name": "testimonials",
+      "settings": {
+        "title": {
+          "label": "Title"
+        },
+        "subtitle": {
+          "label": "Subtitle"
+        },
+        "content_mode": {
+          "label": "Content source",
+          "info": "When enabled, content will be pulled from metaobjects instead of blocks."
+        },
+        "desktop": {
+          "content": "Desktop"
+        },
+        "slides_per_view_desktop": {
+          "label": "Number of visible slides"
+        },
+        "mobile": {
+          "content": "Mobile"
+        },
+        "slides_per_view_mobile": {
+          "label": "Number of visible slides"
+        }
+      },
+      "blocks": {
+        "card": {
+          "name": "Card",
+          "settings": {
+            "image": {
+              "label": "Image"
+            },
+            "name": {
+              "content": "Customers",
+              "label": "Name"
+            },
+            "title": {
+              "label": "Title"
+            },
+            "body_copy": {
+              "content": "Body Copy",
+              "label": "Copy",
+              "default": "Share what customers are saying."
+            },
+            "star_rating": {
+              "content": "Star Rating",
+              "label": "Rating" 
+            }
+          }  
+        }
+      },
+      "presets": {
+        "name": "Testimonials"
+      }
+    },
     "collapsible_content": {
       "name": "Collapsible content",
       "settings": {
