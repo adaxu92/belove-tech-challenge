@@ -6,9 +6,21 @@
         "padding_top": 28,
         "padding_bottom": 28
       }
+    },
+    "testimonials_78tCVm": {
+      "type": "testimonials",
+      "name": "t:sections.testimonials.presets.name",
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "content_mode": true,
+        "slides_per_view_desktop": 3,
+        "slides_per_view_mobile": 1
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "testimonials_78tCVm"
   ]
 }
