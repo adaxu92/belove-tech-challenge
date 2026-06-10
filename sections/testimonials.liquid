@@ -1,0 +1,144 @@
+
+{%- liquid
+  assign metaobjects = [template.name].metafields.custom.testimonials.value | default: false
+  if metaobjects
+    assign count = metaobjects.size
+  else 
+    assign count = section.blocks.size
+  endif
+-%}
+
+{%- if count > 0 -%}
+{{ 'section-testimonials.css' | asset_url | stylesheet_tag }}
+<testimonial-component> 
+  <div id="Testimonials-{{ section.id }}" class="testimonials"
+  data-desktop-slides="{{ section.settings.slides_per_view_desktop }}"
+  data-mobile-slides="{{ section.settings.slides_per_view_mobile }}">
+    <div class="testimonials__header">
+      <h2 class="h1">{{ section.settings.title }}</h2>
+      <h3>{{ section.settings.subtitle }}</h3>
+    </div>
+    <div class="testimonials__splide splide" role="group" aria-label="Testimonial Carousel">
+      <div class="splide__track">
+        <ul class="splide__list">
+          {% liquid
+            if metaobjects and section.settings.content_mode
+              for object in metaobjects
+                assign groups = object.group_selection.value
+                render 'testimonials', blocks: groups
+              endfor
+            else
+              render 'testimonials', blocks: section.blocks
+            endif
+          -%}
+        </ul>
+      </div>
+    </div>
+  </div>
+</testimonial-component>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.testimonials.name",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.testimonials.settings.title.label"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "t:sections.testimonials.settings.subtitle.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "content_mode",
+      "label": "t:sections.testimonials.settings.content_mode.label",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:sections.testimonials.settings.desktop.content"
+    },
+    {
+      "type": "number",
+      "id": "slides_per_view_desktop",
+      "label": "t:sections.testimonials.settings.slides_per_view_desktop.label",
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "t:sections.testimonials.settings.mobile.content"
+    },
+    {
+      "type": "number",
+      "id": "slides_per_view_mobile",
+      "label": "t:sections.testimonials.settings.slides_per_view_mobile.label",
+      "default": 1
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "t:sections.testimonials.blocks.card.name",
+      "limit": 15,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.testimonials.blocks.card.settings.image.label"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.testimonials.blocks.card.settings.name.content"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "t:sections.testimonials.blocks.card.settings.name.label"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.testimonials.blocks.card.settings.title.label"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.testimonials.blocks.card.settings.body_copy.content"
+        },
+        {
+          "type": "textarea",
+          "id": "body_copy",
+          "default": "t:sections.testimonials.blocks.card.settings.body_copy.default",
+          "label": "t:sections.testimonials.blocks.card.settings.body_copy.label"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.testimonials.blocks.card.settings.star_rating.content"
+        },
+        {
+          "type": "range",
+          "id": "star_rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "t:sections.testimonials.blocks.card.settings.star_rating.label",
+          "default": 5
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.testimonials.presets.name"
+    }
+  ]
+}
+{% endschema %}
