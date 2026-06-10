@@ -1,99 +1,98 @@
-# Dawn
+# Testimonials Carousel — Be LOVE™ Tech Assessment
 
-[![Build status](https://github.com/shopify/dawn/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Shopify/dawn/actions/workflows/ci.yml?query=branch%3Amain)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?color=informational)](/.github/CONTRIBUTING.md)
+A reusable Shopify theme section that lets the marketing team manage testimonials entirely from the theme editor, no code required. Supports two content modes (metaobjects and blocks), a configurable carousel, and responsive layout across desktop and mobile.
 
-[Getting started](#getting-started) |
-[Staying up to date with Dawn changes](#staying-up-to-date-with-dawn-changes) |
-[Developer tools](#developer-tools) |
-[Contributing](#contributing) |
-[Code of conduct](#code-of-conduct) |
-[Theme Store submission](#theme-store-submission) |
-[License](#license)
+## What I Built
 
-Dawn represents a HTML-first, JavaScript-only-as-needed approach to theme development. It's Shopify's first source available theme with performance, flexibility, and [Online Store 2.0 features](https://www.shopify.com/partners/blog/shopify-online-store) built-in and acts as a reference for building Shopify themes.
+### Files
 
-* **Web-native in its purest form:** Themes run on the [evergreen web](https://www.w3.org/2001/tag/doc/evergreen-web/). We leverage the latest web browsers to their fullest, while maintaining support for the older ones through progressive enhancement—not polyfills.
-* **Lean, fast, and reliable:** Functionality and design defaults to “no” until it meets this requirement. Code ships on quality. Themes must be built with purpose. They shouldn’t support each and every feature in Shopify.
-* **Server-rendered:** HTML must be rendered by Shopify servers using Liquid. Business logic and platform primitives such as translations and money formatting don’t belong on the client. Async and on-demand rendering of parts of the page is OK, but we do it sparingly as a progressive enhancement.
-* **Functional, not pixel-perfect:** The Web doesn’t require each page to be rendered pixel-perfect by each browser engine. Using semantic markup, progressive enhancement, and clever design, we ensure that themes remain functional regardless of the browser.
+| File | Purpose |
+|------|---------|
+| `sections/testimonials.liquid` | Section entry point: schema, settings, and markup |
+| `snippets/testimonials.liquid` | Renders individual testimonial cards |
+| `assets/testimonial-carousel.js` | Custom element that initializes the Splide carousel |
+| `assets/section-testimonials.css` | Section and card styles |
 
-You can find a more detailed version of our theme code principles in the [contribution guide](https://github.com/Shopify/dawn/blob/main/.github/CONTRIBUTING.md#theme-code-principles).
+### Content Modes
 
-## Getting started
-We recommend using Dawn as a starting point for theme development. [Learn more on Shopify.dev](https://shopify.dev/themes/getting-started/create).
+The section supports two modes, toggled via a setting in the theme editor:
 
-> If you're building a theme for the Shopify Theme Store, then you can use Dawn as a starting point. However, the theme that you submit needs to be [substantively different from Dawn](https://shopify.dev/themes/store/requirements#uniqueness) so that it provides added value for merchants. Learn about the [ways that you can use Dawn](https://shopify.dev/themes/tools/dawn#ways-to-use-dawn).
+**Metaobject mode** — testimonials are pulled from a `Testimonial Group` metaobject, which bundles individual `Testimonial Entry` records. The marketing team selects a group in the theme editor; all entries in that group render automatically.
 
-Please note that the main branch may include code for features not yet released. The "stable" version of Dawn is available in the theme store.
+**Block mode** — testimonials are added manually as blocks directly in the theme editor. Better for one-off landing pages or quick setup.
 
-## Staying up to date with Dawn changes
+The `testimonials.liquid` snippet handles both via a single conditional:
 
-Say you're building a new theme off Dawn but you still want to be able to pull in the latest changes, you can add a remote `upstream` pointing to this Dawn repository.
-
-1. Navigate to your local theme folder.
-2. Verify the list of remotes and validate that you have both an `origin` and `upstream`:
-```sh
-git remote -v
-```
-3. If you don't see an `upstream`, you can add one that points to Shopify's Dawn repository:
-```sh
-git remote add upstream https://github.com/Shopify/dawn.git
-```
-4. Pull in the latest Dawn changes into your repository:
-```sh
-git fetch upstream
-git pull upstream main
+```liquid
+{% if section.settings.content_mode %}
+  {# read from metaobject references #}
+{% else %}
+  {# read from block settings #}
+{% endif %}
 ```
 
-## Developer tools
+### Metaobject Schema
 
-There are a number of really useful tools that the Shopify Themes team uses during development. Dawn is already set up to work with these tools.
+Metaobjects are structured in two tiers to give the marketing team flexible control without touching code.
 
-### Shopify CLI
+**`Testimonial Entry`** — the master record for a single testimonial:
 
-[Shopify CLI](https://github.com/Shopify/shopify-cli) helps you build Shopify themes faster and is used to automate and enhance your local development workflow. It comes bundled with a suite of commands for developing Shopify themes—everything from working with themes on a Shopify store (e.g. creating, publishing, deleting themes) or launching a development server for local theme development.
+| Field | Type |
+|-------|------|
+| `image` | File reference |
+| `name` | Single line text |
+| `title` | Single line text |
+| `body` | Multi-line text |
+| `rating` | Integer (1–5) |
 
-You can follow this [quick start guide for theme developers](https://shopify.dev/docs/themes/tools/cli) to get started.
+**`Testimonial Group`** — a named bundle of entries:
 
-### Theme Check
+| Field | Type |
+|-------|------|
+| `title` | Single line text |
+| `testimonials` | List of `Testimonial Entry` references |
 
-We recommend using [Theme Check](https://github.com/shopify/theme-check) as a way to validate and lint your Shopify themes.
+Instead of selecting individual testimonials on every page, the marketing team picks a Group. Groups can be curated by theme — social proof, star ratings, product team, and so on — while all entries live in one managed master list. Adding or editing an entry updates it everywhere it's referenced automatically.
 
-We've added Theme Check to Dawn's [list of VS Code extensions](/.vscode/extensions.json) so if you're using Visual Studio Code as your code editor of choice, you'll be prompted to install the [Theme Check VS Code](https://marketplace.visualstudio.com/items?itemName=Shopify.theme-check-vscode) extension upon opening VS Code after you've forked and cloned Dawn.
+### Section Schema Settings
 
-You can also run it from a terminal with the following Shopify CLI command:
+Configurable from the Shopify theme editor:
 
-```bash
-shopify theme check
+| Setting | Type | Description |
+|---------|------|-------------|
+| Section title | Text | Displayed above the carousel |
+| Section subtitle | Text | Displayed below the title |
+| Content mode | Checkbox | Toggle between metaobject and block mode |
+| Desktop slides | Range | Number of cards visible on desktop |
+| Mobile slides | Range | Number of cards visible on mobile |
+
+### Testimonial Card
+
+Each card displays:
+
+- Avatar image (optional, falls back to a placeholder SVG)
+- Customer name
+- Customer title
+- Star rating (1–5, rendered as inline SVGs)
+- Body copy (quote)
+
+### Carousel
+
+Built with [Splide.js](https://splidejs.com/). The `<testimonial-component>` custom element reads `data-desktop-slides` and `data-mobile-slides` from the DOM and initializes Splide with the correct `perPage` values per breakpoint. Arrows are hidden; pagination dots are enabled and styled to match the theme.
+
+## Trade-offs & Decisions
+
+- **Two-tier metaobject architecture** — separating Entries from Groups means the master list is managed once, and marketing can freely create, swap, or reorganize groups without risking data duplication or inconsistency.
+- **Custom element (`<testimonial-component>`)** — keeps JS scoped to the section and avoids global init collisions if the section appears multiple times.
+- **Splide over other libraries** — lightweight, no jQuery dependency, good breakpoint support out of the box.
+- **Inline SVG stars** — avoids an icon font or image request dependency for a simple 1–5 rating.
+- **Fallback avatar** — rather than hiding the image slot when none is provided, a neutral SVG placeholder keeps the card layout consistent.
+
+## Dependencies
+
+Splide.js must be loaded before `testimonial-carousel.js`:
+
+```liquid
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js"></script>
 ```
-
-### Continuous Integration
-
-Dawn uses [GitHub Actions](https://github.com/features/actions) to maintain the quality of the theme. [This is a starting point](https://github.com/Shopify/dawn/blob/main/.github/workflows/ci.yml) and what we suggest to use in order to ensure you're building better themes. Feel free to build off of it!
-
-#### Shopify/lighthouse-ci-action
-
-We love fast websites! Which is why we created [Shopify/lighthouse-ci-action](https://github.com/Shopify/lighthouse-ci-action). This runs a series of [Google Lighthouse](https://developers.google.com/web/tools/lighthouse) audits for the home, product and collections pages on a store to ensure code that gets added doesn't degrade storefront performance over time.
-
-#### Shopify/theme-check-action
-
-Dawn runs [Theme Check](#Theme-Check) on every commit via [Shopify/theme-check-action](https://github.com/Shopify/theme-check-action).
-
-## Contributing
-
-Want to make commerce better for everyone by contributing to Dawn? We'd love your help! Please read our [contributing guide](https://github.com/Shopify/dawn/blob/main/.github/CONTRIBUTING.md) to learn about our development process, how to propose bug fixes and improvements, and how to build for Dawn.
-
-## Code of conduct
-
-All developers who wish to contribute through code or issues, please first read our [Code of Conduct](https://github.com/Shopify/dawn/blob/main/.github/CODE_OF_CONDUCT.md).
-
-## Theme Store submission
-
-The [Shopify Theme Store](https://themes.shopify.com/) is the place where Shopify merchants find the themes that they'll use to showcase and support their business. As a theme partner, you can create themes for the Shopify Theme Store and reach an international audience of an ever-growing number of entrepreneurs.
-
-Ensure that you follow the list of [theme store requirements](https://shopify.dev/themes/store/requirements) if you're interested in becoming a [Shopify Theme Partner](https://themes.shopify.com/services/themes/guidelines) and building themes for the Shopify platform.
-
-## License
-
-Copyright (c) 2021-present Shopify Inc. See [LICENSE](/LICENSE.md) for further details.
