@@ -1,6 +1,32 @@
-# Testimonials Carousel - Be LOVE™ Growth Engineer Assessment
+# Testimonials Carousel - BeLOVE Tech Assessment
 
 A reusable Shopify theme section that lets the marketing team manage testimonials entirely from the theme editor, no code required. Supports two content modes (metaobjects and blocks), a configurable carousel, and responsive layout across desktop and mobile.
+
+## Demo
+
+Store URL: https://ada-belove-tech-challenge.myshopify.com
+
+If no blocks or metaobjects are assigned to the section, no content will display.
+
+**With blocks configured:** 
+| Page | URL |
+|------|-----|
+| Index | https://ada-belove-tech-challenge.myshopify.com |
+
+**With metaobjects configured:**
+
+| Page | URL |
+|------|-----|
+| Product | https://ada-belove-tech-challenge.myshopify.com/products/the-multi-managed-snowboard |
+| Product | https://ada-belove-tech-challenge.myshopify.com/products/the-multi-location-snowboard |
+| Page | https://ada-belove-tech-challenge.myshopify.com/pages/test-page |
+
+**Without metaobjects or blocks:**
+
+| Page | URL |
+|------|-----|
+| Product | https://ada-belove-tech-challenge.myshopify.com/products/the-3p-fulfilled-snowboard |
+| Page | https://ada-belove-tech-challenge.myshopify.com/pages/test-page-2 |
 
 ## What I Built
 
@@ -79,28 +105,6 @@ Each card displays:
 ### Carousel
 
 Built with [Splide.js](https://splidejs.com/). The `<testimonial-component>` custom element reads `data-desktop-slides` and `data-mobile-slides` from the DOM and initializes Splide with the correct `perPage` values per breakpoint.
-
-## Demo
-
-Store URL: https://ada-belove-tech-challenge.myshopify.com
-
-If no blocks or metaobjects are assigned to the section, no content will display.
-
-**With metaobjects configured:**
-
-| Page | URL |
-|------|-----|
-| Index | https://ada-belove-tech-challenge.myshopify.com |
-| Product | https://ada-belove-tech-challenge.myshopify.com/products/the-multi-managed-snowboard |
-| Product | https://ada-belove-tech-challenge.myshopify.com/products/the-multi-location-snowboard |
-| Page | https://ada-belove-tech-challenge.myshopify.com/pages/test-page |
-
-**Without metaobjects (block mode):**
-
-| Page | URL |
-|------|-----|
-| Product | https://ada-belove-tech-challenge.myshopify.com/products/the-3p-fulfilled-snowboard |
-| Page | https://ada-belove-tech-challenge.myshopify.com/pages/test-page-2 |
 
 ## Trade-offs & Decisions
 
