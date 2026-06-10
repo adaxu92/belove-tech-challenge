@@ -1,4 +1,4 @@
-# Testimonials Carousel — Be LOVE™ Tech Assessment
+# Testimonials Carousel - Be LOVE™ Growth Engineer Assessment
 
 A reusable Shopify theme section that lets the marketing team manage testimonials entirely from the theme editor, no code required. Supports two content modes (metaobjects and blocks), a configurable carousel, and responsive layout across desktop and mobile.
 
@@ -17,9 +17,9 @@ A reusable Shopify theme section that lets the marketing team manage testimonial
 
 The section supports two modes, toggled via a setting in the theme editor:
 
-**Metaobject mode** — testimonials are pulled from a `Testimonial Group` metaobject, which bundles individual `Testimonial Entry` records. The marketing team selects a group in the theme editor; all entries in that group render automatically.
+**Metaobject mode** - testimonials are pulled from a `Testimonial Group` metaobject, which bundles individual `Testimonial Entry` records. The marketing team selects a group in the theme editor; all entries in that group render automatically.
 
-**Block mode** — testimonials are added manually as blocks directly in the theme editor. Better for one-off landing pages or quick setup.
+**Block mode** - testimonials are added manually as blocks directly in the theme editor. Better for one-off landing pages or quick setup.
 
 The `testimonials.liquid` snippet handles both via a single conditional:
 
@@ -35,7 +35,7 @@ The `testimonials.liquid` snippet handles both via a single conditional:
 
 Metaobjects are structured in two tiers to give the marketing team flexible control without touching code.
 
-**`Testimonial Entry`** — the master record for a single testimonial:
+**`Testimonial Entry`** - the master record for a single testimonial:
 
 | Field | Type |
 |-------|------|
@@ -45,14 +45,14 @@ Metaobjects are structured in two tiers to give the marketing team flexible cont
 | `body` | Multi-line text |
 | `rating` | Integer (1–5) |
 
-**`Testimonial Group`** — a named bundle of entries:
+**`Testimonial Group`** - a named bundle of entries:
 
 | Field | Type |
 |-------|------|
 | `title` | Single line text |
 | `testimonials` | List of `Testimonial Entry` references |
 
-Instead of selecting individual testimonials on every page, the marketing team picks a Group. Groups can be curated by theme — social proof, star ratings, product team, and so on — while all entries live in one managed master list. Adding or editing an entry updates it everywhere it's referenced automatically.
+Instead of selecting individual testimonials on every page, the marketing team picks a Group. Groups can be curated by theme (ie. social, star ratings, product team, and so on), while all entries live in one managed master list. Adding or editing an entry updates it everywhere it's referenced automatically.
 
 ### Section Schema Settings
 
@@ -78,19 +78,39 @@ Each card displays:
 
 ### Carousel
 
-Built with [Splide.js](https://splidejs.com/). The `<testimonial-component>` custom element reads `data-desktop-slides` and `data-mobile-slides` from the DOM and initializes Splide with the correct `perPage` values per breakpoint. Arrows are hidden; pagination dots are enabled and styled to match the theme.
+Built with [Splide.js](https://splidejs.com/). The `<testimonial-component>` custom element reads `data-desktop-slides` and `data-mobile-slides` from the DOM and initializes Splide with the correct `perPage` values per breakpoint.
+
+## Demo
+
+Store URL: https://ada-belove-tech-challenge.myshopify.com
+
+If no blocks or metaobjects are assigned to the section, no content will display.
+
+**With metaobjects configured:**
+
+| Page | URL |
+|------|-----|
+| Index | https://ada-belove-tech-challenge.myshopify.com |
+| Product | https://ada-belove-tech-challenge.myshopify.com/products/the-multi-managed-snowboard |
+| Product | https://ada-belove-tech-challenge.myshopify.com/products/the-multi-location-snowboard |
+| Page | https://ada-belove-tech-challenge.myshopify.com/pages/test-page |
+
+**Without metaobjects (block mode):**
+
+| Page | URL |
+|------|-----|
+| Product | https://ada-belove-tech-challenge.myshopify.com/products/the-3p-fulfilled-snowboard |
+| Page | https://ada-belove-tech-challenge.myshopify.com/pages/test-page-2 |
 
 ## Trade-offs & Decisions
 
-- **Two-tier metaobject architecture** — separating Entries from Groups means the master list is managed once, and marketing can freely create, swap, or reorganize groups without risking data duplication or inconsistency.
-- **Custom element (`<testimonial-component>`)** — keeps JS scoped to the section and avoids global init collisions if the section appears multiple times.
-- **Splide over other libraries** — lightweight, no jQuery dependency, good breakpoint support out of the box.
-- **Inline SVG stars** — avoids an icon font or image request dependency for a simple 1–5 rating.
-- **Fallback avatar** — rather than hiding the image slot when none is provided, a neutral SVG placeholder keeps the card layout consistent.
+- **Splide over other libraries** - lightweight, no jQuery dependency, good breakpoint support out of the box.
+- **Custom element (`<testimonial-component>`)** - keeps JS scoped to the section and avoids global init collisions if the section appears multiple times.
+- **Inline SVG stars** - avoids an icon font or image request dependency for a simple 1–5 rating.
+- **Fallback avatar** - rather than hiding the image slot when none is provided, a neutral SVG placeholder keeps the card layout consistent.
+- **Two-tier metaobject architecture** - separating Entries from Groups means the master list is managed once, and marketing can freely create, swap, or reorganize groups without risking data duplication or inconsistency.
 
 ## Dependencies
-
-Splide.js must be loaded before `testimonial-carousel.js`:
 
 ```liquid
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide.min.css">
