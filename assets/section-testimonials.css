@@ -1,0 +1,52 @@
+
+.testimonials {
+  padding: 12px;
+  margin: 24px 0;
+}
+
+.testimonials__header {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.testimonials__customer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.testimonials__card {
+  padding: 12px;
+  border: 1px solid;
+  border-radius: 12px;
+}
+
+.testimonials__customer img {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+
+.testimonials__customer-content {
+  margin-left: 24px;
+}
+
+.testimonials__header > *,
+.testimonials__customer-content > * {
+  margin: 0;
+}
+
+.testimonials__card blockquote {
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+.testimonials .splide__pagination {
+  bottom: -20px;
+}
+
+.testimonials .splide__pagination__page.is-active {
+  background-color: black;
+}
